@@ -1,0 +1,380 @@
+{
+  "version": "MysticIR Federation v0.8.5",
+  "cases": [
+    {
+      "case": "mod by zero",
+      "ast_equal": true,
+      "trace_equal": true,
+      "error_equal": true,
+      "surface_diff": true,
+      "step_count_left": 12,
+      "step_count_right": 12,
+      "left_error": {
+        "step": 11,
+        "control_kind": "ReturnValue",
+        "expr_kind": "💩₀",
+        "kont_kind": "ModRightK",
+        "kont_depth": 2,
+        "env_keys": [],
+        "observed_count": 0,
+        "frontend": "💩ScatLang",
+        "error_type": "ScatError",
+        "error_message": "mod by zero"
+      },
+      "right_error": {
+        "step": 11,
+        "control_kind": "ReturnValue",
+        "expr_kind": "💩₀",
+        "kont_kind": "ModRightK",
+        "kont_depth": 2,
+        "env_keys": [],
+        "observed_count": 0,
+        "frontend": "🌊SeaIR",
+        "error_type": "ScatError",
+        "error_message": "mod by zero"
+      },
+      "left_trace_tail": [
+        {
+          "step": 7,
+          "control_kind": "ReturnValue",
+          "expr_kind": "💩×1",
+          "kont_kind": "SuccK",
+          "kont_depth": 4,
+          "env_keys": [],
+          "observed_count": 0,
+          "frontend": "💩ScatLang"
+        },
+        {
+          "step": 8,
+          "control_kind": "ReturnValue",
+          "expr_kind": "💩×2",
+          "kont_kind": "SuccK",
+          "kont_depth": 3,
+          "env_keys": [],
+          "observed_count": 0,
+          "frontend": "💩ScatLang"
+        },
+        {
+          "step": 9,
+          "control_kind": "ReturnValue",
+          "expr_kind": "💩×3",
+          "kont_kind": "ModLeftK",
+          "kont_depth": 2,
+          "env_keys": [],
+          "observed_count": 0,
+          "frontend": "💩ScatLang"
+        },
+        {
+          "step": 10,
+          "control_kind": "EvalExpr",
+          "expr_kind": "PoopZeroExpr",
+          "kont_kind": "ModRightK",
+          "kont_depth": 2,
+          "env_keys": [],
+          "observed_count": 0,
+          "frontend": "💩ScatLang"
+        },
+        {
+          "step": 11,
+          "control_kind": "ReturnValue",
+          "expr_kind": "💩₀",
+          "kont_kind": "ModRightK",
+          "kont_depth": 2,
+          "env_keys": [],
+          "observed_count": 0,
+          "frontend": "💩ScatLang"
+        }
+      ],
+      "right_trace_tail": [
+        {
+          "step": 7,
+          "control_kind": "ReturnValue",
+          "expr_kind": "💩×1",
+          "kont_kind": "SuccK",
+          "kont_depth": 4,
+          "env_keys": [],
+          "observed_count": 0,
+          "frontend": "🌊SeaIR"
+        },
+        {
+          "step": 8,
+          "control_kind": "ReturnValue",
+          "expr_kind": "💩×2",
+          "kont_kind": "SuccK",
+          "kont_depth": 3,
+          "env_keys": [],
+          "observed_count": 0,
+          "frontend": "🌊SeaIR"
+        },
+        {
+          "step": 9,
+          "control_kind": "ReturnValue",
+          "expr_kind": "💩×3",
+          "kont_kind": "ModLeftK",
+          "kont_depth": 2,
+          "env_keys": [],
+          "observed_count": 0,
+          "frontend": "🌊SeaIR"
+        },
+        {
+          "step": 10,
+          "control_kind": "EvalExpr",
+          "expr_kind": "PoopZeroExpr",
+          "kont_kind": "ModRightK",
+          "kont_depth": 2,
+          "env_keys": [],
+          "observed_count": 0,
+          "frontend": "🌊SeaIR"
+        },
+        {
+          "step": 11,
+          "control_kind": "ReturnValue",
+          "expr_kind": "💩₀",
+          "kont_kind": "ModRightK",
+          "kont_depth": 2,
+          "env_keys": [],
+          "observed_count": 0,
+          "frontend": "🌊SeaIR"
+        }
+      ]
+    },
+    {
+      "case": "unbound variable",
+      "ast_equal": true,
+      "trace_equal": true,
+      "error_equal": true,
+      "surface_diff": true,
+      "step_count_left": 2,
+      "step_count_right": 2,
+      "left_error": {
+        "step": 1,
+        "control_kind": "EvalExpr",
+        "expr_kind": "Var",
+        "kont_kind": "FlushK",
+        "kont_depth": 1,
+        "env_keys": [],
+        "observed_count": 0,
+        "frontend": "💩ScatLang",
+        "error_type": "ScatError",
+        "error_message": "unbound variable: missing"
+      },
+      "right_error": {
+        "step": 1,
+        "control_kind": "EvalExpr",
+        "expr_kind": "Var",
+        "kont_kind": "FlushK",
+        "kont_depth": 1,
+        "env_keys": [],
+        "observed_count": 0,
+        "frontend": "🌊SeaIR",
+        "error_type": "ScatError",
+        "error_message": "unbound variable: missing"
+      },
+      "left_trace_tail": [
+        {
+          "step": 0,
+          "control_kind": "StmtSeq",
+          "expr_kind": "len=1",
+          "kont_kind": "Halt",
+          "kont_depth": 0,
+          "env_keys": [],
+          "observed_count": 0,
+          "frontend": "💩ScatLang"
+        },
+        {
+          "step": 1,
+          "control_kind": "EvalExpr",
+          "expr_kind": "Var",
+          "kont_kind": "FlushK",
+          "kont_depth": 1,
+          "env_keys": [],
+          "observed_count": 0,
+          "frontend": "💩ScatLang"
+        }
+      ],
+      "right_trace_tail": [
+        {
+          "step": 0,
+          "control_kind": "StmtSeq",
+          "expr_kind": "len=1",
+          "kont_kind": "Halt",
+          "kont_depth": 0,
+          "env_keys": [],
+          "observed_count": 0,
+          "frontend": "🌊SeaIR"
+        },
+        {
+          "step": 1,
+          "control_kind": "EvalExpr",
+          "expr_kind": "Var",
+          "kont_kind": "FlushK",
+          "kont_depth": 1,
+          "env_keys": [],
+          "observed_count": 0,
+          "frontend": "🌊SeaIR"
+        }
+      ]
+    },
+    {
+      "case": "step limit / infinite loop",
+      "ast_equal": true,
+      "trace_equal": true,
+      "error_equal": true,
+      "surface_diff": true,
+      "step_count_left": 40,
+      "step_count_right": 40,
+      "left_error": {
+        "step": 40,
+        "control_kind": "EvalExpr",
+        "expr_kind": "PoopSuccExpr",
+        "kont_kind": "NeqRightK",
+        "kont_depth": 2,
+        "env_keys": [
+          "x"
+        ],
+        "observed_count": 0,
+        "frontend": "💩ScatLang",
+        "error_type": "StepLimitError",
+        "error_message": "step limit exceeded: 40"
+      },
+      "right_error": {
+        "step": 40,
+        "control_kind": "EvalExpr",
+        "expr_kind": "PoopSuccExpr",
+        "kont_kind": "NeqRightK",
+        "kont_depth": 2,
+        "env_keys": [
+          "x"
+        ],
+        "observed_count": 0,
+        "frontend": "🌊SeaIR",
+        "error_type": "StepLimitError",
+        "error_message": "step limit exceeded: 40"
+      },
+      "left_trace_tail": [
+        {
+          "step": 35,
+          "control_kind": "ReturnValue",
+          "expr_kind": "💩₀",
+          "kont_kind": "AssignK",
+          "kont_depth": 1,
+          "env_keys": [
+            "x"
+          ],
+          "observed_count": 0,
+          "frontend": "💩ScatLang"
+        },
+        {
+          "step": 36,
+          "control_kind": "StmtSeq",
+          "expr_kind": "len=1",
+          "kont_kind": "Halt",
+          "kont_depth": 0,
+          "env_keys": [
+            "x"
+          ],
+          "observed_count": 0,
+          "frontend": "💩ScatLang"
+        },
+        {
+          "step": 37,
+          "control_kind": "EvalExpr",
+          "expr_kind": "ScatNeq",
+          "kont_kind": "WhileK",
+          "kont_depth": 1,
+          "env_keys": [
+            "x"
+          ],
+          "observed_count": 0,
+          "frontend": "💩ScatLang"
+        },
+        {
+          "step": 38,
+          "control_kind": "EvalExpr",
+          "expr_kind": "PoopZeroExpr",
+          "kont_kind": "NeqLeftK",
+          "kont_depth": 2,
+          "env_keys": [
+            "x"
+          ],
+          "observed_count": 0,
+          "frontend": "💩ScatLang"
+        },
+        {
+          "step": 39,
+          "control_kind": "ReturnValue",
+          "expr_kind": "💩₀",
+          "kont_kind": "NeqLeftK",
+          "kont_depth": 2,
+          "env_keys": [
+            "x"
+          ],
+          "observed_count": 0,
+          "frontend": "💩ScatLang"
+        }
+      ],
+      "right_trace_tail": [
+        {
+          "step": 35,
+          "control_kind": "ReturnValue",
+          "expr_kind": "💩₀",
+          "kont_kind": "AssignK",
+          "kont_depth": 1,
+          "env_keys": [
+            "x"
+          ],
+          "observed_count": 0,
+          "frontend": "🌊SeaIR"
+        },
+        {
+          "step": 36,
+          "control_kind": "StmtSeq",
+          "expr_kind": "len=1",
+          "kont_kind": "Halt",
+          "kont_depth": 0,
+          "env_keys": [
+            "x"
+          ],
+          "observed_count": 0,
+          "frontend": "🌊SeaIR"
+        },
+        {
+          "step": 37,
+          "control_kind": "EvalExpr",
+          "expr_kind": "ScatNeq",
+          "kont_kind": "WhileK",
+          "kont_depth": 1,
+          "env_keys": [
+            "x"
+          ],
+          "observed_count": 0,
+          "frontend": "🌊SeaIR"
+        },
+        {
+          "step": 38,
+          "control_kind": "EvalExpr",
+          "expr_kind": "PoopZeroExpr",
+          "kont_kind": "NeqLeftK",
+          "kont_depth": 2,
+          "env_keys": [
+            "x"
+          ],
+          "observed_count": 0,
+          "frontend": "🌊SeaIR"
+        },
+        {
+          "step": 39,
+          "control_kind": "ReturnValue",
+          "expr_kind": "💩₀",
+          "kont_kind": "NeqLeftK",
+          "kont_depth": 2,
+          "env_keys": [
+            "x"
+          ],
+          "observed_count": 0,
+          "frontend": "🌊SeaIR"
+        }
+      ]
+    }
+  ]
+}
