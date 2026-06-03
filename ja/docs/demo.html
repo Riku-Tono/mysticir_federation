@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MysticIR Federation v0.8.5 — 発表デモ</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Source+Code+Pro:wght@400;600&display=swap');
+
+  :root {
+    --bg: #0d0f14;
+    --bg2: #151820;
+    --bg3: #1c1f2b;
+    --card: #1e2230;
+    --border: rgba(255,255,255,0.08);
+    --border2: rgba(255,255,255,0.14);
+    --text: #e8e8f0;
+    --muted: #8b8fa8;
+    --scat: #f5a623;
+    --sea: #4fc3f7;
+    --core: #b39ddb;
+    --ok: #4ade80;
+    --err: #f87171;
+    --accent: #7c6af7;
+    --mono: 'Source Code Pro', monospace;
+    --sans: 'Noto Sans JP', sans-serif;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--sans);
+    font-size: 15px;
+    line-height: 1.75;
+  }
+
+  /* ── header ── */
+  .hero {
+    background: var(--bg2);
+    border-bottom: 1px solid var(--border2);
+    padding: 60px 40px 48px;
+    text-align: center;
+  }
+  .hero-badge {
+    display: inline-block;
+    background: rgba(124,106,247,0.15);
+    border: 1px solid rgba(124,106,247,0.4);
+    color: var(--accent);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 4px 14px;
+    border-radius: 20px;
+    margin-bottom: 20px;
+  }
+  .hero h1 {
+    font-size: clamp(26px, 4vw, 42px);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: #fff;
+    line-height: 1.2;
+    margin-bottom: 16px;
+  }
+  .hero h1 span { color: var(--accent); }
+  .hero p {
+    color: var(--muted);
+    font-size: 15px;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  /* ── layout ── */
+  .content { max-width: 900px; margin: 0 auto; padding: 0 24px; }
+
+  section { padding: 56px 0; border-bottom: 1px solid var(--border); }
+  section:last-child { border-bottom: none; }
+
+  h2 {
+    font-size: 22px;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 24px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  h2 .tag {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--accent);
+    opacity: 0.7;
+    margin-left: 4px;
+  }
+
+  p { color: var(--muted); margin-bottom: 16px; }
+  p strong { color: var(--text); font-weight: 500; }
+  .note {
+    background: rgba(124,106,247,0.08);
+    border-left: 3px solid var(--accent);
+    padding: 14px 18px;
+    border-radius: 0 8px 8px 0;
+    margin: 20px 0;
+    font-size: 14px;
+    color: var(--text);
+  }
+
+  /* ── surface comparison ── */
+  .surface-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin: 24px 0;
+  }
+  .surface-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px;
+  }
+  .surface-card .lang-label {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .lang-label.scat { color: var(--scat); }
+  .lang-label.sea  { color: var(--sea); }
+  .surface-card code {
+    font-family: var(--mono);
+    font-size: 14px;
+    line-height: 2;
+    color: var(--text);
+    display: block;
+    white-space: pre;
+  }
+  .surface-card .comment {
+    font-size: 12px;
+    color: var(--muted);
+    margin-top: 8px;
+  }
+
+  /* ── pipeline diagram ── */
+  .pipeline {
+    margin: 32px 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
+  }
+  .pipe-row {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    width: 100%;
+    justify-content: center;
+  }
+  .pipe-box {
+    border-radius: 10px;
+    padding: 14px 22px;
+    text-align: center;
+    min-width: 130px;
+    font-size: 13px;
+    font-weight: 600;
+    position: relative;
+  }
+  .pipe-box.scat-box  { background: rgba(245,166,35,0.12);  border: 1px solid rgba(245,166,35,0.35);  color: var(--scat); }
+  .pipe-box.sea-box   { background: rgba(79,195,247,0.12);  border: 1px solid rgba(79,195,247,0.35);  color: var(--sea); }
+  .pipe-box.core-box  { background: rgba(179,157,219,0.15); border: 1px solid rgba(179,157,219,0.4);  color: var(--core); }
+  .pipe-box.cek-box   { background: rgba(124,106,247,0.12); border: 1px solid rgba(124,106,247,0.4);  color: var(--accent); }
+  .pipe-box.err-box   { background: rgba(248,113,113,0.1);  border: 1px solid rgba(248,113,113,0.35); color: var(--err); }
+  .pipe-box .sub { font-size: 11px; font-weight: 400; color: var(--muted); margin-top: 2px; }
+
+  .arrow-down {
+    width: 0; height: 0;
+    border-left: 8px solid transparent;
+    border-right: 8px solid transparent;
+    margin: 6px auto;
+  }
+  .arrow-down.scat { border-top: 10px solid rgba(245,166,35,0.5); }
+  .arrow-down.sea  { border-top: 10px solid rgba(79,195,247,0.5); }
+  .arrow-down.core { border-top: 10px solid rgba(179,157,219,0.5); }
+
+  .pipe-merge {
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 60px;
+    width: 100%;
+  }
+  .pipe-lane { display: flex; flex-direction: column; align-items: center; }
+  .pipe-convergence {
+    position: relative;
+    height: 48px;
+    width: 100%;
+    max-width: 340px;
+    margin: 0 auto;
+  }
+  .pipe-convergence svg { width: 100%; height: 100%; overflow: visible; }
+
+  /* ── results table ── */
+  .results-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    margin: 24px 0;
+    font-size: 13.5px;
+  }
+  .results-table th {
+    background: var(--bg3);
+    color: var(--muted);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 10px 14px;
+    border-bottom: 1px solid var(--border2);
+    text-align: left;
+  }
+  .results-table th:first-child { border-radius: 8px 0 0 0; }
+  .results-table th:last-child  { border-radius: 0 8px 0 0; }
+  .results-table td {
+    padding: 14px 14px;
+    border-bottom: 1px solid var(--border);
+    vertical-align: middle;
+    color: var(--text);
+  }
+  .results-table tr:last-child td { border-bottom: none; }
+  .results-table tr:last-child td:first-child { border-radius: 0 0 0 8px; }
+  .results-table tr:last-child td:last-child  { border-radius: 0 0 8px 0; }
+  .results-table tbody tr { background: var(--card); }
+  .results-table tbody tr:hover { background: var(--bg3); transition: background 0.15s; }
+
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 12px;
+    font-weight: 600;
+    padding: 3px 10px;
+    border-radius: 20px;
+  }
+  .badge.ok   { background: rgba(74,222,128,0.12);  color: var(--ok);  border: 1px solid rgba(74,222,128,0.3); }
+  .badge.fail { background: rgba(248,113,113,0.12); color: var(--err); border: 1px solid rgba(248,113,113,0.3); }
+  .badge.diff { background: rgba(79,195,247,0.12);  color: var(--sea); border: 1px solid rgba(79,195,247,0.3); }
+
+  .case-name { font-weight: 600; color: #fff; font-size: 14px; }
+  .error-chip {
+    font-family: var(--mono);
+    font-size: 11.5px;
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    padding: 2px 8px;
+    border-radius: 4px;
+    color: var(--err);
+    white-space: nowrap;
+  }
+  .steps-chip {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--muted);
+  }
+
+  /* ── legend ── */
+  .legend-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 16px;
+    margin: 24px 0;
+  }
+  .legend-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 18px;
+  }
+  .legend-card .lhead {
+    font-size: 13px;
+    font-weight: 700;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .legend-card p {
+    font-size: 13px;
+    line-height: 1.6;
+    color: var(--muted);
+    margin: 0;
+  }
+
+  /* ── footer ── */
+  footer {
+    text-align: center;
+    padding: 40px 24px;
+    color: var(--muted);
+    font-size: 13px;
+    border-top: 1px solid var(--border);
+  }
+
+  @media (max-width: 600px) {
+    .surface-grid { grid-template-columns: 1fr; }
+    .legend-grid  { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="hero-badge">MysticIR Federation v0.8.5</div>
+  <h1>表面は違う、<span>地下配管</span>は同じ</h1>
+  <p>異なる表面言語（ScatLang / SeaIR）が、同じ Core AST、同じ CEK trace、同じ error signature に到達することを代表ケースで確認した検証デモです。</p>
+</header>
+
+<main class="content">
+
+  <!-- 1. 概要 -->
+  <section>
+    <h2>MysticIR Federation v0.8.5 とは <span class="tag">Overview</span></h2>
+    <p>MysticIR Federation v0.8.5 では、見た目が異なる2つの「言語」が、代表的な失敗ケースにおいて同じ Core AST に正規化され、同じ CEK trace と error signature に到達することを確認しました。</p>
+    <p>これは「完全証明」ではなく、<strong>プロトタイプ・検証デモ</strong>です。表面の記号が違っても、Core AST に変換された時点で区別がつかなくなり、そのまま同じ CEK machine を動き、同じ場所で同じエラーを起こします。</p>
+    <div class="note">
+      MysticIR Federation v0.8.5 では、異なる表面言語が同じ Core AST、同じ CEK trace、同じ error signature に到達することを代表ケースで確認しました。
+    </div>
+  </section>
+
+  <!-- 2. 表面の違い -->
+  <section>
+    <h2>表面の見た目の違い <span class="tag">Surface</span></h2>
+    <p>下の2つは、<strong>同じ意味</strong>のプログラムです。片方は 💩 系の記号（ScatLang）、もう片方は 🌊 系の記号（SeaIR）で書かれています。</p>
+
+    <div class="surface-grid">
+      <div class="surface-card">
+        <div class="lang-label scat">💩 ScatLang</div>
+        <code>x ← 💩×3 ⊛ 💩₀
+
+🚽⇐ missing
+
+⟳ 💩₀ ≠ 💩⁺(💩₀) {
+  x ← 💩₀
+}</code>
+        <div class="comment">💩₀ = ゼロ、💩×N = N、⊛ = mod、← = 代入</div>
+      </div>
+      <div class="surface-card">
+        <div class="lang-label sea">🌊 SeaIR</div>
+        <code>x ⚓ 🌊×3 ⚫ 🌊
+
+🏝️ missing
+
+🌀 🌊 ≠ 〰️🌊 {
+  x ⚓ 🌊
+}</code>
+        <div class="comment">🌊 = ゼロ、🌊×N = N、⚫ = mod、⚓ = 代入</div>
+      </div>
+    </div>
+    <p>記号は違いますが、パーサー層で正規化され、この代表ケースでは<strong>同じ Core AST</strong> が生成されます。その後の比較では、表面ラベルを除いた trace と error が一致します。</p>
+  </section>
+
+  <!-- 3. パイプライン図 -->
+  <section>
+    <h2>地下配管の構造 <span class="tag">Pipeline</span></h2>
+    <p>ScatLang と SeaIR の表面記号を、同じパーサー層で同じ Core AST に正規化します。その後は、この代表ケースでは同じ経路を通ります。</p>
+
+    <div class="pipeline">
+      <!-- 上段 2フロントエンド -->
+      <div class="pipe-row" style="gap: 40px;">
+        <div class="pipe-lane">
+          <div class="pipe-box scat-box">💩 ScatLang<br><div class="sub">表面パーサー</div></div>
+        </div>
+        <div class="pipe-lane">
+          <div class="pipe-box sea-box">🌊 SeaIR<br><div class="sub">表面パーサー</div></div>
+        </div>
+      </div>
+
+      <!-- 収束矢印 -->
+      <div style="display:flex; gap: 40px; margin: 4px 0;">
+        <div style="display:flex; flex-direction:column; align-items:center;">
+          <div class="arrow-down scat"></div>
+        </div>
+        <div style="display:flex; flex-direction:column; align-items:center;">
+          <div class="arrow-down sea"></div>
+        </div>
+      </div>
+
+      <!-- Core AST -->
+      <div class="pipe-box core-box" style="width: 240px;">
+        Core AST
+        <div class="sub">両者が同じ木構造に変換される</div>
+      </div>
+      <div class="arrow-down core"></div>
+
+      <!-- CEK -->
+      <div class="pipe-box cek-box" style="width: 240px;">
+        CEK Machine / Trace
+        <div class="sub">同じ step 列、同じ continuation</div>
+      </div>
+      <div class="arrow-down core" style="border-top-color: rgba(248,113,113,0.5);"></div>
+
+      <!-- Error Federation -->
+      <div class="pipe-box err-box" style="width: 240px;">
+        Error Federation
+        <div class="sub">同じ error signature（frontend ラベルを除く）</div>
+      </div>
+    </div>
+
+    <p style="margin-top: 20px;">フロントエンドのラベル（💩ScatLang / 🌊SeaIR）は trace に残るので、<strong>表面の違いは証拠として残しつつ</strong>、地下では同一である、という状態が作れます。</p>
+  </section>
+
+  <!-- 4. 検証結果 -->
+  <section>
+    <h2>3つの失敗ケースの結果 <span class="tag">Results</span></h2>
+    <p>以下は Python スクリプトを実行して得られた実際の結果です。今回用意した3つの代表ケースでは <strong>trace_equal・error_equal = true</strong>、<strong>surface_diff = true</strong> が確認されました。</p>
+
+    <table class="results-table">
+      <thead>
+        <tr>
+          <th>ケース</th>
+          <th>error type</th>
+          <th>trace_equal</th>
+          <th>error_equal</th>
+          <th>surface_diff</th>
+          <th>steps（両者）</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>
+            <div class="case-name">mod by zero</div>
+            <div style="font-size:12px; color: var(--muted); margin-top:2px;">3 ⊛ 0 → ゼロ除算</div>
+          </td>
+          <td><span class="error-chip">ScatError</span></td>
+          <td><span class="badge ok">✓ true</span></td>
+          <td><span class="badge ok">✓ true</span></td>
+          <td><span class="badge diff">✓ true</span></td>
+          <td><span class="steps-chip">12 == 12</span></td>
+        </tr>
+        <tr>
+          <td>
+            <div class="case-name">unbound variable</div>
+            <div style="font-size:12px; color: var(--muted); margin-top:2px;">未定義変数 missing を参照</div>
+          </td>
+          <td><span class="error-chip">ScatError</span></td>
+          <td><span class="badge ok">✓ true</span></td>
+          <td><span class="badge ok">✓ true</span></td>
+          <td><span class="badge diff">✓ true</span></td>
+          <td><span class="steps-chip">2 == 2</span></td>
+        </tr>
+        <tr>
+          <td>
+            <div class="case-name">step limit / infinite loop</div>
+            <div style="font-size:12px; color: var(--muted); margin-top:2px;">0≠1 が永遠に true → step 40 で打ち切り</div>
+          </td>
+          <td><span class="error-chip">StepLimitError</span></td>
+          <td><span class="badge ok">✓ true</span></td>
+          <td><span class="badge ok">✓ true</span></td>
+          <td><span class="badge diff">✓ true</span></td>
+          <td><span class="steps-chip">40 == 40</span></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p style="font-size: 13px; color: var(--muted);">
+      ※ steps が一致するのは、今回の代表ケースで両表面記号が同じ Core AST に正規化され、CEK machine が同じ step 数で進んだためです。
+    </p>
+  </section>
+
+  <!-- 5. 用語の説明 -->
+  <section>
+    <h2>3つの指標の意味 <span class="tag">Glossary</span></h2>
+
+    <div class="legend-grid">
+      <div class="legend-card">
+        <div class="lhead" style="color: var(--ok);">✓ trace_equal</div>
+        <p>CEK machine が踏んだ「ステップ列の記録」を、フロントエンドのラベルを外して比べたとき、この代表ケースで ScatLang と SeaIR が一致したら true。<br>同じ実行経路として扱えることを示します。</p>
+      </div>
+      <div class="legend-card">
+        <div class="lhead" style="color: var(--ok);">✓ error_equal</div>
+        <p>エラーが起きた瞬間の「状態の指紋」を、フロントエンドラベルを外して比べたとき、両者が一致したら true。<br>同じ場所で転んだ証拠。</p>
+      </div>
+      <div class="legend-card">
+        <div class="lhead" style="color: var(--sea);">✓ surface_diff</div>
+        <p>フロントエンドのラベルを付けたまま比べると、💩ScatLang と 🌊SeaIR の違いが残って不一致になる = true。<br>表面の違いは記録に残る証拠。</p>
+      </div>
+    </div>
+
+    <p>3つがすべて <strong>true</strong> のとき、「<strong>表面は違う、地下配管は同じ</strong>」という Federation の主張が、そのケースで確認できた、ということになります。</p>
+  </section>
+
+  <!-- 6. まとめ -->
+  <section>
+    <h2>まとめ <span class="tag">Summary</span></h2>
+    <p>MysticIR Federation v0.8.5 は「増やす」作業ではなく、<strong>発表に使える固定版に整える</strong>ことを目的としたプロトタイプです。</p>
+    <p>3つの代表的な失敗ケース（ゼロ除算・未束縛変数・無限ループ）すべてで、ScatLang と SeaIR が同じ CEK trace・同じ error signature に到達することが確認できました。</p>
+    <div class="note" style="display:flex; gap: 12px; align-items: flex-start;">
+      <span style="font-size: 20px;">🔧</span>
+      <span>実行コマンド: <code style="font-family: var(--mono); background: rgba(255,255,255,0.07); padding: 2px 8px; border-radius: 4px; font-size: 13px;">python mysticir_federation_v085.py</code> — 同じフォルダに <code style="font-family: var(--mono); background: rgba(255,255,255,0.07); padding: 2px 8px; border-radius: 4px; font-size: 13px;">mysticir_v085_error_federation_report.json</code> が生成されます。</span>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  MysticIR Federation v0.8.5 &nbsp;—&nbsp; 代表ケースで確認した検証デモ &nbsp;|&nbsp; 完全証明・学術的証明済みではありません
+</footer>
+
+</body>
+</html>
