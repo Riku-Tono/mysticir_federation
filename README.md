@@ -4,6 +4,8 @@
 
 A prototype verification demo confirming that two languages with different surface notation — **💩 ScatLang** and **🌊 SeaIR** — normalize to the same Core AST and, from there, follow the same CEK trace and reach the same error signature on representative failure cases.
 
+[日本語版はこちら](./ja/README.md)
+
 ---
 
 ## Overview
@@ -125,6 +127,14 @@ Output: `mysticir_v085_error_federation_report.json` in the same directory.
 ---
 
 *MysticIR Federation v0.8.5 — Verification demo on representative cases | Not a complete or formally proven result*
+
+---
+
+## Documents
+
+- [Demo / explanation](./docs/demo.html)
+- [Evidence report](./mysticir_v085_error_federation_report.json)
+- [日本語版 README](./ja/README.md)
 
 ---
 
